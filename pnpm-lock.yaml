@@ -231,6 +231,9 @@ importers:
       '@formify/db':
         specifier: workspace:*
         version: link:../../packages/db
+      drizzle-orm:
+        specifier: ^0.45.2
+        version: 0.45.2(@neondatabase/serverless@1.1.0)
       express:
         specifier: ^5.2.1
         version: 5.2.1(supports-color@7.2.0)

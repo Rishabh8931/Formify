@@ -5,9 +5,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc"
   },
   "exports": {
     ".": {
@@ -17,9 +17,10 @@
   },
   "type": "module",
   "dependencies": {
+    "@formify/db": "workspace:*",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
-    "tsx": "^4.23.13",
-    "@formify/db": "workspace:*"
+    "tsx": "^4.23.13"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

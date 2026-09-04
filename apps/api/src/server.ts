@@ -1,11 +1,13 @@
+import { createServer } from "node:http";
+import { app } from "./app.js";
 import { pool } from "@formify/db";
-import express from "express";
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3001;
 
-const server = app.listen(PORT, () => {
-  console.log(`API listening on port ${PORT}`);
+const server = createServer(app);
+
+server.listen(PORT, () => {
+  console.log(`API server running on http://localhost:${PORT}`);
 });
 
 const shutdown = async (signal: string) => {

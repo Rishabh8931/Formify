@@ -12,7 +12,9 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/seed.ts",
-    "db:health": "tsx src/test-connection.ts"
+    "db:health": "tsx src/test-connection.ts",
+    "dev": "tsx watch src/test-connection.ts",
+    "start": "tsx src/test-connection.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
