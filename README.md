@@ -130,3 +130,97 @@ perf      Performance improvement
 build     Build/dependency changes
 ci        CI/CD changes
 ```
+
+# API Architecture
+
+```text
+                        HTTP
+                         │
+                         ▼
+                ┌─────────────────┐
+                │    Middleware   │
+                │                 │
+                │ request-id      │
+                │ validation      │
+                │ auth (later)    │
+                └────────┬────────┘
+                         │
+                         ▼
+                    ┌─────────┐
+                    │ Router  │
+                    └────┬────┘
+                         │
+                         ▼
+                 ┌──────────────┐
+                 │ Controller   │
+                 │              │
+                 │ HTTP concern │
+                 └──────┬───────┘
+                        │
+                        ▼
+                 ┌──────────────┐
+                 │   Service    │
+                 │              │
+                 │ Business     │
+                 │ logic        │
+                 └──────┬───────┘
+                        │
+                        ▼
+                 ┌──────────────┐
+                 │ Repository   │
+                 │              │
+                 │ Data access  │
+                 └──────┬───────┘
+                        │
+                        ▼
+                 ┌──────────────┐
+                 │ @formify/db  │
+                 │ Drizzle ORM  │
+                 └──────┬───────┘
+                        │
+                        ▼
+                   PostgreSQL
+
+
+```
+
+# Request Flow
+
+````text
+                        Request
+                           │
+                           ▼
+                     Request ID
+                           │
+                           ▼
+                        Logger
+                           │
+                           ▼
+                    Security Headers
+                           │
+                           ▼
+                         CORS
+                           │
+                           ▼
+                    Rate Limiting
+                           │
+                           ▼
+                     /api/v1
+                           │
+                           ▼
+                        Router
+                           │
+                           ▼
+                      Controller
+                           │
+                           ▼
+                       Service
+                           │
+                           ▼
+                     Repository
+                           │
+                           ▼
+                      PostgreSQL
+
+                      ```
+````
