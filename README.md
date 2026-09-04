@@ -117,3 +117,16 @@ Formify uses a Turborepo-based monorepo.
               │  eslint-config              │
               └─────────────────────────────┘
 ```
+
+```text
+feat      New functionality
+fix       Bug fix
+refactor  Code restructuring without behavior change
+docs      Documentation
+test      Tests
+chore     Tooling/configuration
+style     Formatting/UI style changes
+perf      Performance improvement
+build     Build/dependency changes
+ci        CI/CD changes
+```
