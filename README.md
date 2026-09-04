@@ -184,43 +184,87 @@ ci        CI/CD changes
 
 ```
 
-# Request Flow
+# Request pipeline
 
-````text
-                        Request
-                           │
-                           ▼
-                     Request ID
-                           │
-                           ▼
-                        Logger
-                           │
-                           ▼
-                    Security Headers
-                           │
-                           ▼
-                         CORS
-                           │
-                           ▼
-                    Rate Limiting
-                           │
-                           ▼
-                     /api/v1
-                           │
-                           ▼
-                        Router
-                           │
-                           ▼
-                      Controller
-                           │
-                           ▼
-                       Service
-                           │
-                           ▼
-                     Repository
-                           │
-                           ▼
-                      PostgreSQL
+```text
 
-                      ```
-````
+                    HTTP Request
+                         │
+                         ▼
+               Request ID Middleware
+                         │
+                         ▼
+                 Logging Middleware
+                         │
+                         ▼
+                      Helmet
+                         │
+                         ▼
+                       CORS
+                         │
+                         ▼
+                   express.json
+                         │
+                         ▼
+                  Rate Limiter
+                         │
+                         ▼
+                       /api
+                         │
+                         ▼
+                       /v1
+                         │
+                         ▼
+                     /health
+                         │
+                         ▼
+                    Controller
+                         │
+                         ▼
+                      Service
+                         │
+                         ▼
+                    Repository
+                         │
+                         ▼
+                      Drizzle
+                         │
+                         ▼
+                    PostgreSQL
+
+```
+
+# Authentication pipeline
+
+```text
+Next.js
+   │
+   │ HTTP + cookies
+   ▼
+Express /api/v1
+   │
+   ├── Request ID
+   ├── Logger
+   ├── Helmet
+   ├── CORS
+   ├── Rate limiting
+   │
+   ▼
+Better Auth
+   │
+   ├── Session management
+   ├── Password authentication
+   ├── Email verification
+   └── Auth endpoints
+   │
+   ▼
+Drizzle
+   │
+   ▼
+Neon PostgreSQL
+
+Resend
+   ▲
+   │
+Better Auth → verification email
+```
