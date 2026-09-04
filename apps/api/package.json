@@ -18,7 +18,8 @@
   "type": "module",
   "dependencies": {
     "express": "^5.2.1",
-    "tsx": "^4.23.13"
+    "tsx": "^4.23.13",
+    "@formify/db": "workspace:*"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
