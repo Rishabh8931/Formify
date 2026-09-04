@@ -11,7 +11,8 @@
     "typecheck": "turbo typecheck",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "setup:env": "bash ./scripts/setup-env.sh"
   },
   "keywords": [],
   "author": "",

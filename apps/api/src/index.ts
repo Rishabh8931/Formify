@@ -1,11 +1,23 @@
+import { pool } from "@formify/db";
 import express from "express";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
+const server = app.listen(PORT, () => {
+  console.log(`API listening on port ${PORT}`);
 });
 
-app.listen(8080, () => {
-  console.log("Server is running on http://localhost:8080");
-});
+const shutdown = async (signal: string) => {
+  console.log(`${signal} received. Shutting down...`);
+
+  server.close(async () => {
+    await pool.end();
+
+    console.log("Database pool closed.");
+    process.exit(0);
+  });
+};
+
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));
