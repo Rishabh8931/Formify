@@ -1,3 +1,3 @@
 // packages/db/src/schema/index.ts
 
-export {};
+export * from "./auth.js";
