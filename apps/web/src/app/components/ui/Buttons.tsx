@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "@formify/ui";
+import { cn } from "@formify/utils";
 
 type ButtonProps = {
   children: React.ReactNode;

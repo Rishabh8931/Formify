@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@formify/ui": "workspace:*",
+    "@formify/utils": "workspace:*",
     "better-auth": "^1.7.2",
     "next": "16.3.3",
     "react": "19.2.8",

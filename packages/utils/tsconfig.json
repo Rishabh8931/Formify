@@ -7,8 +7,9 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
+    "module": "ESNext",
     "target": "esnext",
+    "moduleResolution": "Bundler",
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],

@@ -271,7 +271,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@formify/ui':
+      '@formify/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       better-auth:
@@ -351,6 +351,9 @@ importers:
       tailwind-merge:
         specifier: ^3.6.0
         version: 3.6.0
+      zod:
+        specifier: ^4.5.4
+        version: 4.5.4
 
 packages:
 
