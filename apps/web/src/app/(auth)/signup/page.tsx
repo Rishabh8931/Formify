@@ -79,7 +79,6 @@ export default function SignupPage() {
       });
 
       if (error) {
-        console.error("Signup error:", error);
         setErrors({
           form: error.message || "Unable to create your account.",
         });
