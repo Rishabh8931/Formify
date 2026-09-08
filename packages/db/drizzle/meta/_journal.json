@@ -8,6 +8,13 @@
       "when": 1788892886852,
       "tag": "0000_clear_barracuda",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788893783693,
+      "tag": "0001_spicy_magik",
+      "breakpoints": true
     }
   ]
 }

@@ -1,12 +1,13 @@
 import {
+  pgEnum,
   pgTable,
-  uuid,
-  varchar,
   text,
+  varchar,
   jsonb,
   timestamp,
-  pgEnum,
   index,
+  uuid,
+  unique,
 } from "drizzle-orm/pg-core";
 
 import { user } from "./auth.js";
@@ -24,7 +25,9 @@ export const forms = pgTable(
 
     userId: text("user_id")
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
 
     name: varchar("name", { length: 255 }).notNull(),
 
@@ -44,6 +47,7 @@ export const forms = pgTable(
     })
       .notNull()
       .defaultNow(),
+
     updatedAt: timestamp("updated_at", {
       withTimezone: true,
     })
@@ -51,13 +55,11 @@ export const forms = pgTable(
       .$onUpdate(() => new Date())
       .notNull(),
   },
+  (table) => [
+    index("forms_user_id_idx").on(table.userId),
 
-  (table) => ({
-    userIdIdx: index("forms_user_id_idx").on(table.userId),
+    index("forms_user_status_idx").on(table.userId, table.status),
 
-    userStatusIdx: index("forms_user_status_idx").on(
-      table.userId,
-      table.status,
-    ),
-  }),
+    unique("forms_user_slug_unique").on(table.userId, table.slug),
+  ],
 );
