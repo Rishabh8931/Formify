@@ -1,4 +1,4 @@
-import { cn } from "@formify/ui";
+import { cn } from "@formify/utils";
 
 interface ContainerProps {
   children: React.ReactNode;

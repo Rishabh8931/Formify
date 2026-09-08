@@ -2,5 +2,7 @@ packages:
   - "packages/*"
   - "apps/*"
 allowBuilds:
+  "@prisma/client": false
+  better-sqlite3: false
   esbuild: false
   unrs-resolver: false
