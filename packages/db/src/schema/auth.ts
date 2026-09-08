@@ -7,6 +7,7 @@ import {
   index,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import { forms } from "../index.js";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -90,6 +91,7 @@ export const verification = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
+  forms: many(forms),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
