@@ -19,6 +19,7 @@
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.7.2",
     "@formify/db": "workspace:*",
+    "@formify/utils": "workspace:*",
     "better-auth": "^1.7.2",
     "cors": "^2.8.6",
     "drizzle-orm": "^0.45.2",
