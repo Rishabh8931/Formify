@@ -5,6 +5,7 @@ import { db } from "@formify/db";
 import { formRepository } from "../repositories/forms.repostory.js";
 import { fieldRepository } from "../repositories/field.repository.js";
 import { fieldAttributeRepository } from "../repositories/field-attribute.repository.js";
+import { NotFoundError } from "../errors/index.js";
 
 export class FormService {
   private generateSlugSuffix(length = 6) {
@@ -41,7 +42,7 @@ export class FormService {
     const form = await formRepository.findByIdAndUserId(formId, userId);
 
     if (!form) {
-      throw new Error("Form not found");
+      throw new NotFoundError("Form not found");
     }
 
     return form;
@@ -65,7 +66,7 @@ export class FormService {
     const existingForm = await formRepository.findByIdAndUserId(formId, userId);
 
     if (!existingForm) {
-      throw new Error("Form not found");
+      throw new NotFoundError("Form not found");
     }
 
     let slug = data.slug;
@@ -89,7 +90,7 @@ export class FormService {
     );
 
     if (!deletedForm) {
-      throw new Error("Form not found");
+      throw new NotFoundError("Form not found");
     }
 
     return deletedForm;
@@ -101,7 +102,7 @@ export class FormService {
     const sourceForm = await formRepository.findByIdAndUserId(formId, userId);
 
     if (!sourceForm) {
-      throw new Error("Form not found");
+      throw new NotFoundError("Form not found");
     }
 
     let slug = `${sourceForm.slug}-copy`;
