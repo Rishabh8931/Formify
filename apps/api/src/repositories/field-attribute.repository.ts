@@ -1,13 +1,13 @@
 import { and, eq } from "drizzle-orm";
 
-import { db, fieldAttributes } from "@formify/db";
+import { db, fieldAttributes, type DatabaseExecutor } from "@formify/db";
 
 export class FieldAttributeRepository {
-  /**
-   * Create an attribute for a field.
-   */
-  async create(data: typeof fieldAttributes.$inferInsert) {
-    const [attribute] = await db
+  async create(
+    data: typeof fieldAttributes.$inferInsert,
+    database: DatabaseExecutor = db,
+  ) {
+    const [attribute] = await database
       .insert(fieldAttributes)
       .values(data)
       .returning();
@@ -15,12 +15,19 @@ export class FieldAttributeRepository {
     return attribute;
   }
 
-  /**
-   * Find an attribute by ID while verifying that it
-   * belongs to the specified field.
-   */
-  async findByIdAndFieldId(attributeId: string, fieldId: string) {
-    const [attribute] = await db
+  async findAllByFieldId(fieldId: string, database: DatabaseExecutor = db) {
+    return database
+      .select()
+      .from(fieldAttributes)
+      .where(eq(fieldAttributes.fieldId, fieldId));
+  }
+
+  async findByIdAndFieldId(
+    attributeId: string,
+    fieldId: string,
+    database = db,
+  ) {
+    const [attribute] = await database
       .select()
       .from(fieldAttributes)
       .where(
@@ -34,41 +41,13 @@ export class FieldAttributeRepository {
     return attribute ?? null;
   }
 
-  /**
-   * Get all attributes belonging to a field.
-   */
-  async findAllByFieldId(fieldId: string) {
-    return db
-      .select()
-      .from(fieldAttributes)
-      .where(eq(fieldAttributes.fieldId, fieldId));
-  }
-
-  /**
-   * Find a specific attribute by its key.
-   */
-  async findByKey(fieldId: string, key: string) {
-    const [attribute] = await db
-      .select()
-      .from(fieldAttributes)
-      .where(
-        and(eq(fieldAttributes.fieldId, fieldId), eq(fieldAttributes.key, key)),
-      )
-      .limit(1);
-
-    return attribute ?? null;
-  }
-
-  /**
-   * Update an attribute while ensuring it belongs
-   * to the specified field.
-   */
   async updateByIdAndFieldId(
     attributeId: string,
     fieldId: string,
     data: Partial<typeof fieldAttributes.$inferInsert>,
+    database = db,
   ) {
-    const [attribute] = await db
+    const [attribute] = await database
       .update(fieldAttributes)
       .set(data)
       .where(
@@ -82,12 +61,12 @@ export class FieldAttributeRepository {
     return attribute ?? null;
   }
 
-  /**
-   * Delete an attribute while ensuring it belongs
-   * to the specified field.
-   */
-  async deleteByIdAndFieldId(attributeId: string, fieldId: string) {
-    const [attribute] = await db
+  async deleteByIdAndFieldId(
+    attributeId: string,
+    fieldId: string,
+    database = db,
+  ) {
+    const [attribute] = await database
       .delete(fieldAttributes)
       .where(
         and(
@@ -98,16 +77,6 @@ export class FieldAttributeRepository {
       .returning();
 
     return attribute ?? null;
-  }
-
-  /**
-   * Delete all attributes belonging to a field.
-   */
-  async deleteAllByFieldId(fieldId: string) {
-    return db
-      .delete(fieldAttributes)
-      .where(eq(fieldAttributes.fieldId, fieldId))
-      .returning();
   }
 }
 

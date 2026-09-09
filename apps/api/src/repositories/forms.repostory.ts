@@ -1,24 +1,21 @@
 import { and, desc, eq } from "drizzle-orm";
 
-import { db, forms } from "@formify/db";
+import { db } from "@formify/db";
+import { forms } from "@formify/db";
+import type { DatabaseExecutor } from "@formify/db";
 
 export class FormRepository {
-  /**
-   * Create a new form.
-   */
-  async create(data: typeof forms.$inferInsert) {
-    const [form] = await db.insert(forms).values(data).returning();
+  async create(
+    data: typeof forms.$inferInsert,
+    database: DatabaseExecutor = db,
+  ) {
+    const [form] = await database.insert(forms).values(data).returning();
 
     return form;
   }
 
-  /**
-   * Find a form owned by a specific user.
-   *
-   * Ownership is included directly in the query.
-   */
-  async findByIdAndUserId(formId: string, userId: string) {
-    const [form] = await db
+  async findByIdAndUserId(formId: string, userId: string, database = db) {
+    const [form] = await database
       .select()
       .from(forms)
       .where(and(eq(forms.id, formId), eq(forms.userId, userId)))
@@ -27,26 +24,21 @@ export class FormRepository {
     return form ?? null;
   }
 
-  /**
-   * Get all forms belonging to a user.
-   */
-  async findAllByUserId(userId: string) {
-    return db
+  async findAllByUserId(userId: string, database = db) {
+    return database
       .select()
       .from(forms)
       .where(eq(forms.userId, userId))
       .orderBy(desc(forms.updatedAt));
   }
 
-  /**
-   * Update a form owned by a specific user.
-   */
   async updateByIdAndUserId(
     formId: string,
     userId: string,
     data: Partial<typeof forms.$inferInsert>,
+    database = db,
   ) {
-    const [form] = await db
+    const [form] = await database
       .update(forms)
       .set(data)
       .where(and(eq(forms.id, formId), eq(forms.userId, userId)))
@@ -55,11 +47,8 @@ export class FormRepository {
     return form ?? null;
   }
 
-  /**
-   * Delete a form owned by a specific user.
-   */
-  async deleteByIdAndUserId(formId: string, userId: string) {
-    const [form] = await db
+  async deleteByIdAndUserId(formId: string, userId: string, database = db) {
+    const [form] = await database
       .delete(forms)
       .where(and(eq(forms.id, formId), eq(forms.userId, userId)))
       .returning();
@@ -67,11 +56,8 @@ export class FormRepository {
     return form ?? null;
   }
 
-  /**
-   * Check whether a slug already exists for a user.
-   */
-  async existsBySlug(userId: string, slug: string) {
-    const [form] = await db
+  async existsBySlug(userId: string, slug: string, database = db) {
+    const [form] = await database
       .select({
         id: forms.id,
       })
