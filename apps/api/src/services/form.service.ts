@@ -39,7 +39,10 @@ export class FormService {
   }
 
   async getForm(userId: string, formId: string) {
-    const form = await formRepository.findByIdAndUserId(formId, userId);
+    const form = await formRepository.findByIdAndUserIdWithRelations(
+      formId,
+      userId,
+    );
 
     if (!form) {
       throw new NotFoundError("Form not found");
@@ -49,7 +52,7 @@ export class FormService {
   }
 
   async getForms(userId: string) {
-    return formRepository.findAllByUserId(userId);
+    return formRepository.findAllByUserIdWithRelations(userId);
   }
 
   async updateForm(
@@ -99,7 +102,10 @@ export class FormService {
   // duplicateForm duplicates a form along with its fields and attributes. It generates a unique slug for the new form to avoid conflicts.
 
   async duplicateForm(userId: string, formId: string) {
-    const sourceForm = await formRepository.findByIdAndUserId(formId, userId);
+    const sourceForm = await formRepository.findByIdAndUserIdWithRelations(
+      formId,
+      userId,
+    );
 
     if (!sourceForm) {
       throw new NotFoundError("Form not found");

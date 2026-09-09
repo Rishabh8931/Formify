@@ -25,7 +25,7 @@ export class FieldAttributeRepository {
   async findByIdAndFieldId(
     attributeId: string,
     fieldId: string,
-    database = db,
+    database: DatabaseExecutor = db,
   ) {
     const [attribute] = await database
       .select()
@@ -45,7 +45,7 @@ export class FieldAttributeRepository {
     attributeId: string,
     fieldId: string,
     data: Partial<typeof fieldAttributes.$inferInsert>,
-    database = db,
+    database: DatabaseExecutor = db,
   ) {
     const [attribute] = await database
       .update(fieldAttributes)
@@ -64,7 +64,7 @@ export class FieldAttributeRepository {
   async deleteByIdAndFieldId(
     attributeId: string,
     fieldId: string,
-    database = db,
+    database: DatabaseExecutor = db,
   ) {
     const [attribute] = await database
       .delete(fieldAttributes)

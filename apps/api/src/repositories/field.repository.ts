@@ -12,7 +12,7 @@ export class FieldRepository {
     return field;
   }
 
-  async findAllByFormId(formId: string, database = db) {
+  async findAllByFormId(formId: string, database: DatabaseExecutor = db) {
     return database
       .select()
       .from(fields)
@@ -20,7 +20,11 @@ export class FieldRepository {
       .orderBy(asc(fields.position));
   }
 
-  async findByIdAndFormId(fieldId: string, formId: string, database = db) {
+  async findByIdAndFormId(
+    fieldId: string,
+    formId: string,
+    database: DatabaseExecutor = db,
+  ) {
     const [field] = await database
       .select()
       .from(fields)
@@ -34,7 +38,7 @@ export class FieldRepository {
     fieldId: string,
     formId: string,
     data: Partial<typeof fields.$inferInsert>,
-    database = db,
+    database: DatabaseExecutor = db,
   ) {
     const [field] = await database
       .update(fields)
@@ -45,7 +49,11 @@ export class FieldRepository {
     return field ?? null;
   }
 
-  async deleteByIdAndFormId(fieldId: string, formId: string, database = db) {
+  async deleteByIdAndFormId(
+    fieldId: string,
+    formId: string,
+    database: DatabaseExecutor = db,
+  ) {
     const [field] = await database
       .delete(fields)
       .where(and(eq(fields.id, fieldId), eq(fields.formId, formId)))

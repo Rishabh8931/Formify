@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+import * as schema from "./schema/index.js";
+
 dotenv.config({
   path: path.resolve(__dirname, "../../../.env"),
 });
@@ -25,4 +27,4 @@ export const pool = new Pool({
   max: 10,
 });
 
-export const db = drizzle({ client: pool });
+export const db = drizzle({ client: pool, schema });
