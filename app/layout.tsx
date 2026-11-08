@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto_Slab, Public_Sans } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs'
+import { ThemeProvider } from "@/components/providers/ThemeProvider"
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +31,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-serif", robotoSlab.variable, publicSansHeading.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+         <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            >
+        {children}
+        </ThemeProvider>
+        </body>
     </html>
     </ClerkProvider>
   );
