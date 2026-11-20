@@ -11,3 +11,12 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Form {
+  id          Int    @id @default(autoincrement())
+  userId      String
+  visits      Int    @default(0)
+  submissions Int    @default(0)
+
+  @@index([userId])
+}
