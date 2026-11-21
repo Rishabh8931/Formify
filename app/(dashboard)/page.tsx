@@ -8,6 +8,7 @@ import { ReactNode, Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
+import CreateFormBtn from "@/components/CreateFormBtn";
 
 
 
@@ -20,6 +21,7 @@ export default function Home() {
      <Separator className="my-4" />
     <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
      <Separator className="my-4" />
+     <CreateFormBtn />
    </div>
   );
 }
