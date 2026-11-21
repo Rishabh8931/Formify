@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from "@/components/providers/ThemeProvider"
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toast";
 
 const publicSansHeading = Public_Sans({subsets:['latin'],variable:'--font-heading'});
 
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             disableTransitionOnChange
             >
         {children}
+        <Toaster /> 
         </ThemeProvider>
         </body>
     </html>

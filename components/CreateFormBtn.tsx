@@ -25,6 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { toast } from "@/components/ui/toast";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,9 +46,18 @@ const CreateFormBtn = () => {
     },
   });
 
-  async function onSubmit(values: FormSchemaType) {
-    console.log(values);
+  async function onSubmit() {
+   try {
+    // Simulate an API call
+   } 
+   catch {
+     toast.add({
+      title: "Error",
+      description: "Something went wrong. Please try again.",
+      type: "error",
+     })
   }
+  } 
 
   return (
     <Dialog>
