@@ -1,9 +1,15 @@
+
 "use client";
+
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { ImSpinner2 } from "react-icons/im";
 
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -11,29 +17,105 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 import {
   Form,
   FormControl,
-  FormDescription,
-FormField,
-FormItem,
-Form  
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
-} from "./ui/form"
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
+const formSchema = z.object({
+  name: z.string().min(4).max(50),
+  description: z.string().min(4).max(100),
+});
+
+type FormSchemaType = z.infer<typeof formSchema>;
 
 const CreateFormBtn = () => {
+  const form = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+  });
+
+  async function onSubmit(values: FormSchemaType) {
+    console.log(values);
+  }
+
   return (
     <Dialog>
-      <DialogTrigger render={<Button />}>Create new form</DialogTrigger>
+      <DialogTrigger render={<Button />}>
+        Create new form
+      </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Form</DialogTitle>
-          <DialogDescription>Create a new form</DialogDescription>
+          <DialogDescription>
+            Create a new form to collect responses.
+          </DialogDescription>
         </DialogHeader>
 
-     
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter form name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      rows={5}
+                      placeholder="Describe your form"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter>
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting}
+                className="w-full bg-blue-500 hover:bg-blue-600"
+              >
+                {form.formState.isSubmitting ? (
+                  <ImSpinner2 className="animate-spin" />
+                ) : (
+                  "Save"
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
