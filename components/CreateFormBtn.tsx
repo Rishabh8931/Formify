@@ -1,9 +1,8 @@
 
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { useForm } from "react-hook-form";
 import { ImSpinner2 } from "react-icons/im";
 
 import { Button } from "@/components/ui/button";
@@ -30,12 +29,9 @@ import { toast } from "@/components/ui/toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-const formSchema = z.object({
-  name: z.string().min(4).max(50),
-  description: z.string().min(4).max(100),
-});
+import { formSchema, FormSchemaType } from "@/schema/form";
 
-type FormSchemaType = z.infer<typeof formSchema>;
+
 
 const CreateFormBtn = () => {
   const form = useForm<FormSchemaType>({

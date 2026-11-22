@@ -41,3 +41,7 @@ export async function GetFormStats(){
      
 
 }
+
+export async function CreateForm(data: {name: string, description: string | undefined}){
+    
+}
