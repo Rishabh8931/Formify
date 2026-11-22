@@ -1,52 +1,63 @@
-"use server"
+"use server";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { FormSchemaType, formSchema } from "@/schema/form";
 
+class UserNotFoundError extends Error {}
 
+export async function GetFormStats() {
+  const user = await currentUser();
+  if (!user) {
+    throw new UserNotFoundError("User not found");
+  }
 
-class UserNotFoundError extends Error {
+  const stats = await prisma.form.aggregate({
+    where: {
+      userId: user.id,
+    },
+    _sum: {
+      visits: true,
+      submissions: true,
+    },
+  });
 
+  const visits = stats._sum.visits || 0;
+  const submissions = stats._sum.submissions || 0;
+  const submissionRate = visits > 0 ? (submissions / visits) * 100 : 0;
+  const bounceRate = 100 - submissionRate;
+
+  return {
+    visits,
+    submissions,
+    submissionRate,
+    bounceRate,
+  };
 }
 
-export async function GetFormStats(){
-    const user = await currentUser();
-     if(!user){
-        throw new UserNotFoundError("User not found");
-     }
+export async function CreateForm(data: FormSchemaType) {
+  const validation = formSchema.safeParse(data);
+  if (!validation.success) {
+    throw new Error("Invalid form data");
+  }
 
-     const stats = await prisma.form.aggregate({
-        where : {
-            userId : user.id
-        },
-        _sum: {
-            visits: true,
-            submissions: true
-        }
-     })
+  const user = await currentUser();
+  if (!user) {
+    throw new UserNotFoundError("User not found");
+  }
 
+  const { name, description } = validation.data;
 
+  const form = await prisma.form.create({
+    data: {
+      name,
+      description,
+      userId: user.id,
+    },
+  }); 
 
-     const visits = stats._sum.visits || 0;
-    const submissions = stats._sum.submissions || 0;
-    const submissionRate = visits > 0 ? (submissions / visits) * 100 : 0;
-    const bounceRate = 100 - submissionRate;
+  if (!form) {
+    throw new Error("Form creation failed");
+  }
 
-    return {
-        visits,
-        submissions,
-        submissionRate,
-        bounceRate
-    }
-
-     
-
-}
-
-export async function CreateForm(data: FormSchemaType){
-    const validation = formSchema.safeParse(data);
-    if(!validation.success){
-        throw new Error("Invalid form data");
-    }
-console.log("Name of form: ", data.name)
+  return form.id;
 }
