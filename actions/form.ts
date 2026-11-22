@@ -1,7 +1,7 @@
 "use server"
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { FormSchemaType } from "@/schema/form";
+import { FormSchemaType, formSchema } from "@/schema/form";
 
 
 
@@ -44,5 +44,9 @@ export async function GetFormStats(){
 }
 
 export async function CreateForm(data: FormSchemaType){
+    const validation = formSchema.safeParse(data);
+    if(!validation.success){
+        throw new Error("Invalid form data");
+    }
 console.log("Name of form: ", data.name)
 }

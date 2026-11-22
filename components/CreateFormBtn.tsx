@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 import { formSchema, FormSchemaType } from "@/schema/form";
+import { CreateForm } from "@/actions/form";
 
 
 
@@ -42,9 +43,14 @@ const CreateFormBtn = () => {
     },
   });
 
-  async function onSubmit() {
+  async function onSubmit(values: FormSchemaType) {
    try {
-    // Simulate an API call
+     await CreateForm(values);
+     toast.add({
+      title: "Success",
+      description: "Form created successfully.",
+      type: "success",
+     })
    } 
    catch {
      toast.add({
@@ -108,6 +114,7 @@ const CreateFormBtn = () => {
 
             <DialogFooter>
               <Button
+              onClick={form.handleSubmit(onSubmit)}
                 type="submit"
                 disabled={form.formState.isSubmitting}
                 className="w-full bg-blue-500 hover:bg-blue-600"
