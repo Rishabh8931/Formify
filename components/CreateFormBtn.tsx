@@ -32,10 +32,12 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { formSchema, FormSchemaType } from "@/schema/form";
 import { CreateForm } from "@/actions/form";
+import { useState } from "react";
 
 
 
 const CreateFormBtn = () => {
+  const [open, setOpen] = useState(false);
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,6 +54,8 @@ const CreateFormBtn = () => {
       description: "Form created successfully.",
       type: "success",
      })
+     setOpen(false);
+     form.reset();
      console.log("Form ID: ", formId);
    } 
    catch {
@@ -64,7 +68,7 @@ const CreateFormBtn = () => {
   } 
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button className="group border border-primary/20 h-[190px] items-center justify-center flex flex-col hover:bg-primary hover:cursor-pointer border-dashed gap-4 " variant="outline" />}>
       <BsFileEarmarkPlus 
       className="text-muted-foreground h-8 w-8 group-hover:text-primary  "

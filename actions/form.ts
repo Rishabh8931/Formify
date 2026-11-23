@@ -2,6 +2,7 @@
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { FormSchemaType, formSchema } from "@/schema/form";
+import { refresh } from "next/cache";
 
 
 class UserNotFoundError extends Error {}
@@ -60,6 +61,7 @@ export async function CreateForm(data: FormSchemaType) {
     throw new Error("Form creation failed");
   }
 
+  refresh();
   return form.id;
 }
 
