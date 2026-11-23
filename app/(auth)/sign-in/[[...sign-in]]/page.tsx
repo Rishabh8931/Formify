@@ -1,7 +1,10 @@
-import {SignIn} from '@clerk/nextjs';
-
+import { Suspense } from "react";
+import { SignIn } from "@clerk/nextjs";
 
 export default function Page() {
-return <SignIn/>
-
+  return (
+    <Suspense fallback={null}>
+      <SignIn />
+    </Suspense>
+  );
 }
