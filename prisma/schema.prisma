@@ -15,8 +15,32 @@ datasource db {
 model Form {
   id          Int    @id @default(autoincrement())
   userId      String
+  name        String
+  description String  @default("")
+  content     String  @default("[]")
+  published  Boolean @default(false)
+  createdAt   DateTime @default(now())
+
+
   visits      Int    @default(0)
   submissions Int    @default(0)
 
+  shareUrl   String  @default(uuid())
+  FormSubmissions FormSubmissions[]
+
+ @@unique([userId, name])
   @@index([userId])
+}
+
+
+model FormSubmissions {
+  id        Int      @id @default(autoincrement())
+  formId    Int
+  data      String   @default("{}")
+  createdAt DateTime @default(now())
+  form      Form     @relation(fields: [formId], references: [id])
+
+  content   String   
+
+  @@index([formId])
 }
