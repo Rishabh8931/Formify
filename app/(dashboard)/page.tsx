@@ -1,14 +1,23 @@
 
-import { GetFormStats } from "@/actions/form";
+import { GetFormStats, GetForms } from "@/actions/form";
 import { LuView } from "react-icons/lu";
 import { FaWpforms } from "react-icons/fa";
 import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { ReactNode, Suspense } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import CreateFormBtn from "@/components/CreateFormBtn";
+import { Form } from "../generated/prisma/browser";
 
 
 
@@ -21,7 +30,16 @@ export default function Home() {
      <Separator className="my-4" />
     <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
      <Separator className="my-4" />
-     <CreateFormBtn />
+     
+     <div 
+     className= "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+     ><CreateFormBtn /></div>
+
+     <Suspense fallback={[1,2,3,4].map((i) => <FormCardSkeleton key={i} />)}>
+
+<FormCards />
+
+     </Suspense>
    </div>
   );
 }
@@ -118,4 +136,59 @@ function StatsCard(
       <p className="pt-1 text-xs text-muted-foreground">{helperText}</p>
     </CardContent>
    </Card>
+}
+
+
+function FormCardSkeleton() {
+
+  return <Skeleton 
+  className="border-2 border-primary/20 h-[190px] w-full"
+  />
+
+
+}
+
+ async function FormCards() {
+
+const forms = await GetForms();
+
+ return (
+   <div className="grid w-full grid-cols-1 gap-6 pt-6 md:grid-cols-2 lg:grid-cols-3">
+     {forms.map((form) => (
+       <FormCard key={form.id} form={form} />
+     ))}
+   </div>
+ );
+}
+
+
+function FormCard({form}: {form: Form}){
+   return (
+     <Card className="h-[190px] transition-shadow hover:shadow-md">
+       <CardHeader className="flex flex-row items-start justify-between gap-4">
+         <div className="min-w-0">
+           <CardTitle className="truncate text-bold">{form.name}</CardTitle>
+           <CardDescription className="mt-1 line-clamp-2">
+             {form.description || "No description provided."}
+           </CardDescription>
+         </div>
+         <Badge variant={form.published ? "destructive" : "secondary"}>
+           {form.published ? "Published" : "Draft"}
+         </Badge>
+       </CardHeader>
+       <CardContent className="grid grid-cols-2 gap-4">
+         <div>
+           <p className="text-2xl font-bold">{form.visits.toLocaleString()}</p>
+           <p className="text-xs text-muted-foreground">Visits</p>
+         </div>
+         <div>
+           <p className="text-2xl font-bold">{form.submissions.toLocaleString()}</p>
+           <p className="text-xs text-muted-foreground">Submissions</p>
+         </div>
+       </CardContent>
+       <CardFooter className="mt-auto text-xs text-muted-foreground">
+         Created {form.createdAt.toLocaleDateString()}
+       </CardFooter>
+     </Card>
+   );
 }

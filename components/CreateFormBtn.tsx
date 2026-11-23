@@ -4,6 +4,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ImSpinner2 } from "react-icons/im";
+import { BsFileEarmarkPlus } from "react-icons/bs";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -64,8 +65,11 @@ const CreateFormBtn = () => {
 
   return (
     <Dialog>
-      <DialogTrigger render={<Button />}>
-        Create new form
+      <DialogTrigger render={<Button className="group border border-primary/20 h-[190px] items-center justify-center flex flex-col hover:bg-primary hover:cursor-pointer border-dashed gap-4 " variant="outline" />}>
+      <BsFileEarmarkPlus 
+      className="text-muted-foreground h-8 w-8 group-hover:text-primary  "
+      />
+       <p className = "font-bold text-muted-foreground text-xl group-hover:text-primary"> Create new Form</p>
       </DialogTrigger>
 
       <DialogContent>
