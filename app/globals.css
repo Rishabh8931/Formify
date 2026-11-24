@@ -163,3 +163,15 @@
     @apply font-serif;
   }
 }
+
+.form-builder-grid {
+  background-color: var(--accent);
+  background-image: url("/paper.svg");
+  background-repeat: repeat;
+  background-position: center;
+  background-size: auto;
+}
+
+.dark .form-builder-grid {
+  background-image: url("/paper-dark.svg");
+}
