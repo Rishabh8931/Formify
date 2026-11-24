@@ -1,6 +1,8 @@
 import { GetFormById } from "@/actions/form";
 import FormBuilder from "@/components/FormBuilder";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function BuilderPage({
   params,
@@ -16,5 +18,13 @@ export default async function BuilderPage({
 
   const form = await GetFormById(formId);
 
-  return <FormBuilder form={form} />;
+  if (!form) {
+    notFound();
+  }
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <FormBuilder form={form} />
+    </Suspense>
+  );
 }
