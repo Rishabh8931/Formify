@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { FormSchemaType, formSchema } from "@/schema/form";
 import { refresh } from "next/cache";
+import { notFound } from "next/navigation";
 
 
 class UserNotFoundError extends Error {}
@@ -79,4 +80,24 @@ export async function GetForms(){
         createdAt: "desc"
       }
     })
+}
+
+export async function GetFormById(id: number) {
+  const user = await currentUser();
+  if (!user) {
+    throw new UserNotFoundError("User not found");
+  }
+
+  const form = await prisma.form.findFirst({
+    where: {
+      id,
+      userId: user.id,
+    },
+  });
+
+  if (!form) {
+    notFound();
+  }
+
+  return form;
 }

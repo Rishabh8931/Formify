@@ -30,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <ClerkProvider>
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-serif", robotoSlab.variable, publicSansHeading.variable)}
     >
       <body className="min-h-full flex flex-col">

@@ -189,12 +189,18 @@ function FormCard({ form }: { form: Form }) {
       </CardContent>
       <CardFooter className="mt-auto text-xs text-muted-foreground">
         {form.published && (
-          <Button render={<Link href={`/form/${form.id}`} />}>
+          <Button
+            nativeButton={false}
+            render={<Link href={`/form/${form.id}`} />}
+          >
             View submissions <BiRightArrowAlt />
           </Button>
         )}
         {!form.published && (
-          <Button render={<Link href={`/builder/${form.id}`} />}>
+          <Button
+            nativeButton={false}
+            render={<Link href={`/builder/${form.id}`} />}
+          >
             Edit form <FaEdit />
           </Button>
         )}
