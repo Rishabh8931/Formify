@@ -1,9 +1,15 @@
 "use client";
-import DesignerSidebar from "./DesignerSidebar";
+
+import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
+import { useState } from "react";
+import DesignerSidebar from "./DesignerSidebar";
+import { FormElementInstance } from "./FormElement";
 
 export default function Designer() {
-  const { setNodeRef } = useDroppable({
+
+
+  const { isOver, setNodeRef } = useDroppable({
     id: "designer-drop-area",
     data: {
       isDesignerDropArea: true,
@@ -11,20 +17,34 @@ export default function Designer() {
   });
 
   return (
-    <div className="flex h-full w-full">
-      <div className="p-4 w-full">
+    <div className="flex h-full w-full min-h-0 overflow-hidden gap-4">
+      {/* Main Designer Area */}
+      <div className="flex min-w-0 flex-1">
         <div
           ref={setNodeRef}
-          className="bg-background m-auto h-full max-w-[920px] flex-1 grow
-        flex flex-col items-center justify-start overflow-y-auto rounded-xl
-        "
+          className={cn(
+            "mx-auto flex h-full w-full max-w-[920px] flex-col items-center justify-start overflow-y-auto rounded-xl bg-background transition-all",
+            isOver && "ring-2 ring-primary/20",
+          )}
         >
-          <p className="text-xl text-muted-foreground flex grow item-center font-bold">
-            Drop Here
-          </p>
+          {!isOver && (
+            <p className="mt-4 text-xl font-bold text-muted-foreground">
+              Drop Here
+            </p>
+          )}
+
+          {isOver && (
+            <div className="w-full p-4">
+              <div className="h-[120px] w-full rounded-md bg-primary/20" />
+            </div>
+          )}
         </div>
       </div>
-      <DesignerSidebar />
+
+      {/* Right Sidebar */}
+      <div className="h-full w-[320px] shrink-0 overflow-y-auto border-l">
+        <DesignerSidebar />
+      </div>
     </div>
   );
 }
