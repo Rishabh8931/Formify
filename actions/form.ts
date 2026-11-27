@@ -3,15 +3,13 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { FormSchemaType, formSchema } from "@/schema/form";
 import { refresh } from "next/cache";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
-
-class UserNotFoundError extends Error {}
 
 export async function GetFormStats() {
   const user = await currentUser();
   if (!user) {
-    throw new UserNotFoundError("User not found");
+    redirect("/sign-in");
   }
 
   const stats = await prisma.form.aggregate({
@@ -45,7 +43,7 @@ export async function CreateForm(data: FormSchemaType) {
 
   const user = await currentUser();
   if (!user) {
-    throw new UserNotFoundError("User not found");
+    redirect("/sign-in");
   }
 
   const { name, description } = validation.data;
@@ -69,7 +67,7 @@ export async function CreateForm(data: FormSchemaType) {
 export async function GetForms(){
     const user = await currentUser();
     if(!user){
-      throw new UserNotFoundError("User not found");
+      redirect("/sign-in");
     }
 
     return await prisma.form.findMany({
@@ -85,7 +83,7 @@ export async function GetForms(){
 export async function GetFormById(id: number) {
   const user = await currentUser();
   if (!user) {
-    throw new UserNotFoundError("User not found");
+    redirect("/sign-in");
   }
 
   const form = await prisma.form.findFirst({
